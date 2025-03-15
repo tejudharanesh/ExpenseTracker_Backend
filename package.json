@@ -2,6 +2,7 @@
   "name": "expense-tracker-backend",
   "version": "1.0.0",
   "description": "Backend for Expense Tracker application",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -17,6 +18,7 @@
     "mongoose": "^8.1.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "nodemon": "^3.1.9"
   }
 }
