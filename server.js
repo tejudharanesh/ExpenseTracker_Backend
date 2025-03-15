@@ -1,16 +1,35 @@
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
 import { connect } from "mongoose";
 import authRoute from "./routes/auth.js";
 import expensesRoute from "./routes/expenses.js";
 import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 
-// Middleware
-app.use(cors());
+// Allowed origins
+const allowedOrigins = [
+  "https://expense-tracker.188857.xyz/",
+  "https://calm-entremet-f36417.netlify.app/", // Add other domains here
+  "https://expense-tracker.188857.xyz",
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
+
+// Apply CORS Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
-dotenv.config();
 
 // Connect to MongoDB
 connect(process.env.MONGODB_URI)
