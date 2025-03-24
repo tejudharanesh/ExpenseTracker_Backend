@@ -81,6 +81,26 @@ router.get("/monthly", auth, async (req, res) => {
   }
 });
 
+//get yearly expenses
+router.get("/yearly", auth, async (req, res) => {
+  try {
+    const date = new Date();
+    const expenses = await Expense.find({
+      userId: req.user.userId,
+      date: {
+        $gte: startOfYear(date),
+        $lte: endOfYear(date),
+      },
+    }).sort({ date: -1 });
+    res.json(expenses);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+
 // Generate report
 router.get("/report/:type", auth, async (req, res) => {
   try {

@@ -75,4 +75,24 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Get current user
+router.get("/me", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    res.json({ id: user._id, name: user.name, mobile: user.mobile });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//logout
+router.post("/logout", auth, async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.json({ message: "Logout successful" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 export default router;
